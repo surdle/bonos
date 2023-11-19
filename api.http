@@ -1,0 +1,17 @@
+### Get all bonos
+GET http://localhost:3001/api/bonos
+
+### Get a bono by id
+GET http://localhost:3001/api/bonos/1
+
+### Delete a bono by id
+DELETE http://localhost:3001/api/bonos/1
+
+### Post a bono
+POST http://localhost:3001/api/bonos
+Content-Type: application/json
+
+{
+    "title": "bono 1",
+    "content": "Content 1"
+}
