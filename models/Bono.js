@@ -3,7 +3,11 @@ import mongoose from 'mongoose'
 export const bonoSchema = new mongoose.Schema({
   content: String,
   date: Date,
-  important: Boolean
+  important: Boolean,
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }
 })
 
 bonoSchema.set('toJSON', {
@@ -15,22 +19,3 @@ bonoSchema.set('toJSON', {
 })
 
 export const Bono = mongoose.model('Bono', bonoSchema)
-
-// Bono.find({}).then(result => {
-//   result.forEach(bono => {
-//     console.log(bono)
-//   })
-//   dbConnection.close()
-// })
-
-// const bono = new Bono({
-//   content: 'Bono was here',
-//   date: new Date(),
-//   important: true
-// })
-
-// bono.save().then((result) => {
-//   console.log(result)
-//   dbConnection.close()
-// }
-// )

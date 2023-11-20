@@ -5,14 +5,16 @@ GET http://localhost:3001/api/bonos
 GET http://localhost:3001/api/bonos/65597e60ed98d10807cbd81e
 
 ### Delete a bono by id
-DELETE http://localhost:3001/api/bonos/65598164aefcb239d7def4c2
+DELETE http://localhost:3001/api/bonos/65597e8d3eefac6932c40b3e
 
 ### Post a bono
 POST http://localhost:3001/api/bonos
 Content-Type: application/json
 
 {
-    "content": "Content 2"
+    "content": "New content for test user",
+    "important": true,
+    "userId": "655abc5676015316a2967c4d"
 }
 
 ### Put a bono

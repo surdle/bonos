@@ -11,3 +11,9 @@ export const connectToDatabase = async () => {
     process.exit(1)
   }
 }
+
+process.on('uncaughtException', (err) => {
+  console.error(err.message)
+  mongoose.connection.close()
+  process.exit(1)
+})

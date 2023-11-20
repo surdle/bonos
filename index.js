@@ -4,6 +4,9 @@ import { connectToDatabase } from './mongo.js'
 import { Bono } from './models/Bono.js'
 import { notFound } from './middleware/notFound.js'
 import { handleErrors } from './middleware/handleErrors.js'
+import { usersRouter } from './controllers/users.js'
+import { disconnect } from 'mongoose'
+import { User } from './models/User.js'
 
 const app = express()
 app.use(cors())
@@ -11,18 +14,30 @@ app.use(cors())
 app.use(express.json())
 
 app.get('/', (req, res) => {
-  res.send('<h1>Hello World!</h1>')
+  res.send(`<h1>Hello World!</h1>
+  <style>
+  html {
+    color-scheme: dark;
+  }
+  </style>
+  
+  `)
 }
 )
 
-app.get('/api/bonos', (req, res) => {
+// app.get('/api/bonos', (req, res) => {
+//   connectToDatabase()
+//   Bono.find({}).then(result => {
+//     res.json(result)
+//   })
+// })
+
+app.get('/api/bonos', async (req, res) => {
   connectToDatabase()
-  Bono.find({}).then(result => {
-    res.json(result)
-  })
-}
-
-)
+  const bonos = await Bono.find({}).populate('user', { username: 1, name: 1 })
+  disconnect()
+  res.json(bonos)
+})
 
 app.get('/api/bonos/:id', (req, res, next) => {
   const id = req.params.id
@@ -36,14 +51,10 @@ app.get('/api/bonos/:id', (req, res, next) => {
 }
 )
 
-app.delete('/api/bonos/:id', (req, res, next) => {
+app.delete('/api/bonos/:id', async (req, res, next) => {
   const id = req.params.id
-
-  Bono.findOneAndDelete({ _id: id }).then(result => {
-    res.status(204).end()
-  }).catch(err => {
-    next(err)
-  })
+  await Bono.findOneAndDelete({ _id: id })
+  res.status(204).end()
 })
 
 app.put('/api/bonos/:id', (req, res, next) => {
@@ -59,33 +70,47 @@ app.put('/api/bonos/:id', (req, res, next) => {
   })
 })
 
-app.post('/api/bonos', (req, res) => {
-  const bono = req.body
+app.post('/api/bonos', async (req, res, next) => {
+  try {
+    connectToDatabase()
+    const {
+      content,
+      important = false,
+      userId
+    } = req.body
 
-  if (!bono || !bono.content) {
-    return res.status(400).json({
-      error: 'content missing'
+    const user = await User.findById(userId)
+
+    if (!req.body || !content) {
+      return res.status(400).json({
+        error: 'content missing'
+      }
+      )
+    }
+
+    const newBono = new Bono({
+      content,
+      important,
+      date: new Date(),
+      user: user._id
     }
     )
-  }
 
-  const newBono = new Bono({
-    content: bono.content,
-    important: bono.important || false,
-    date: new Date()
+    const savedBono = await newBono.save()
+    user.bonos = user.bonos.concat(savedBono._id)
+    await user.save()
+    res.status(201).json(savedBono)
+  } catch (error) {
+    next(error)
   }
-  )
-
-  newBono.save().then((result) => {
-    console.log(result)
-    res.status(201).json(newBono)
-  }
-  )
 }
+
 )
 
-app.use(handleErrors)
+app.use('/api/users', usersRouter)
+
 app.use(notFound)
+app.use(handleErrors)
 
 const PORT = process.env.PORT || 3001
 
