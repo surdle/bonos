@@ -10,11 +10,11 @@ DELETE http://localhost:3001/api/bonos/65597e8d3eefac6932c40b3e
 ### Post a bono
 POST http://localhost:3001/api/bonos
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6IjY1NWFiYzU2NzYwMTUzMTZhMjk2N2M0ZCIsImlhdCI6MTcwMDUyMTY0NywiZXhwIjoxNzAwNTIxNzA3fQ.XMsUocYqWjk2ttgIwGwQYPCB-EWAPThy-lAqJZtWRcw
 
 {
     "content": "New content for test user",
-    "important": true,
-    "userId": "655abc5676015316a2967c4d"
+    "important": true
 }
 
 ### Put a bono
@@ -24,3 +24,8 @@ Content-Type: application/json
 {
     "content": "New new content 2"
 }
+
+
+
+
+{"username":"test","name":"Test User","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6IjY1NWFiYzU2NzYwMTUzMTZhMjk2N2M0ZCIsImlhdCI6MTcwMDUyMTY0NywiZXhwIjoxNzAwNTIxNzA3fQ.XMsUocYqWjk2ttgIwGwQYPCB-EWAPThy-lAqJZtWRcw"}

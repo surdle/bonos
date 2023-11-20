@@ -1,121 +1,31 @@
 import express from 'express'
 import cors from 'cors'
-import { connectToDatabase } from './mongo.js'
-import { Bono } from './models/Bono.js'
 import { notFound } from './middleware/notFound.js'
 import { handleErrors } from './middleware/handleErrors.js'
 import { usersRouter } from './controllers/users.js'
-import { disconnect } from 'mongoose'
-import { User } from './models/User.js'
+import { loginRouter } from './controllers/login.js'
+import { bonosRouter } from './controllers/bonos.js'
 
 const app = express()
-app.use(cors())
 
+// Usamos el middleware CORS para permitir solicitudes de origen cruzado
+app.use(cors())
+// Usamos el middleware de Express para analizar el cuerpo de las solicitudes HTTP como JSON
 app.use(express.json())
 
-app.get('/', (req, res) => {
-  res.send(`<h1>Hello World!</h1>
-  <style>
-  html {
-    color-scheme: dark;
-  }
-  </style>
-  
-  `)
-}
-)
+// Definimos las rutas para nuestra API
+app.use('/api/bonos', bonosRouter) // Rutas para los bonos
+app.use('/api/users', usersRouter) // Rutas para los usuarios
+app.use('/api/login', loginRouter) // Rutas para la autenticación
 
-// app.get('/api/bonos', (req, res) => {
-//   connectToDatabase()
-//   Bono.find({}).then(result => {
-//     res.json(result)
-//   })
-// })
-
-app.get('/api/bonos', async (req, res) => {
-  connectToDatabase()
-  const bonos = await Bono.find({}).populate('user', { username: 1, name: 1 })
-  disconnect()
-  res.json(bonos)
-})
-
-app.get('/api/bonos/:id', (req, res, next) => {
-  const id = req.params.id
-  Bono.findById(id).then(bono => {
-    if (bono) {
-      res.json(bono)
-    } else {
-      res.status(404).end()
-    }
-  }).catch(next)
-}
-)
-
-app.delete('/api/bonos/:id', async (req, res, next) => {
-  const id = req.params.id
-  await Bono.findOneAndDelete({ _id: id })
-  res.status(204).end()
-})
-
-app.put('/api/bonos/:id', (req, res, next) => {
-  const newBonoInfo = {
-    content: req.body.content,
-    important: req.body.important
-  }
-
-  Bono.findByIdAndUpdate(req.params.id, newBonoInfo, { new: true }).then(result => {
-    res.json(result)
-  }).catch(err => {
-    next(err)
-  })
-})
-
-app.post('/api/bonos', async (req, res, next) => {
-  try {
-    connectToDatabase()
-    const {
-      content,
-      important = false,
-      userId
-    } = req.body
-
-    const user = await User.findById(userId)
-
-    if (!req.body || !content) {
-      return res.status(400).json({
-        error: 'content missing'
-      }
-      )
-    }
-
-    const newBono = new Bono({
-      content,
-      important,
-      date: new Date(),
-      user: user._id
-    }
-    )
-
-    const savedBono = await newBono.save()
-    user.bonos = user.bonos.concat(savedBono._id)
-    await user.save()
-    res.status(201).json(savedBono)
-  } catch (error) {
-    next(error)
-  }
-}
-
-)
-
-app.use('/api/users', usersRouter)
-
+// Usamos el middleware personalizado para manejar las rutas no encontradas y los errores
 app.use(notFound)
 app.use(handleErrors)
 
+// Definimos el puerto en el que se ejecutará nuestra aplicación
 const PORT = process.env.PORT || 3001
 
+// Iniciamos nuestra aplicación en el puerto definido
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
-}
-
-)
+  console.log(`🚀 Servidor iniciado en http://localhost:${PORT}/api/`)
+})

@@ -2,13 +2,13 @@ import express from 'express'
 import { User } from '../models/User.js'
 import bycrypt from 'bcrypt'
 import { disconnect } from 'mongoose'
-import { connectToDatabase } from '../mongo.js'
+import { connectToDatabase } from '../database/mongo.js'
 
 export const usersRouter = express.Router()
 
 usersRouter.get('/', async (req, res) => {
   try {
-    connectToDatabase()
+    await connectToDatabase()
     const users = await User
       .find({}).populate('bonos', { content: 1, date: 1 })
     disconnect()
@@ -19,8 +19,8 @@ usersRouter.get('/', async (req, res) => {
 })
 
 usersRouter.post('/', async (req, res) => {
-  connectToDatabase()
   try {
+    await connectToDatabase()
     const body = req.body
 
     if (!body.password || body.password.length < 3) {
