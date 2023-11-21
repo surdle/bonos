@@ -2,7 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import { notFound } from './middleware/notFound.js'
 import { handleErrors } from './middleware/handleErrors.js'
-import { bonosAsignadosRouter } from './controllers/asignacion-bonos.js'
+import { asignacionBonosRouter } from './controllers/asignacion-bonos.js'
 import { ingresoRouter } from './controllers/ingreso.js'
 import { usuariosRouter } from './controllers/usuarios.js'
 
@@ -14,7 +14,7 @@ app.use(cors())
 app.use(express.json())
 
 // Definimos las rutas para nuestra API
-app.use('/api/bonos-asignados', bonosAsignadosRouter) // Rutas para los bonos asignados')
+app.use('/api/bonos-asignados', asignacionBonosRouter) // Rutas para los bonos asignados')
 app.use('/api/ingreso', ingresoRouter)
 app.use('/api/usuarios', usuariosRouter)
 

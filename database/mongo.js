@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 
 // Definimos la cadena de conexión a la base de datos MongoDB
-export const connectionString = process.env.MONGO_DB_URI || 'mongodb://localhost/bono-list'
+const connectionString = process.env.MONGO_DB_URI || 'mongodb://localhost/bono-list'
 
 // Definimos una función asíncrona para conectarnos a la base de datos
 export const connectToDatabase = async () => {

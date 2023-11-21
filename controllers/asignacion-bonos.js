@@ -4,9 +4,9 @@ import { Bono } from '../models/Bono.js'
 import { listaEstudiantes } from '../database/lista-estudiantes.js'
 import { userExtractor } from '../middleware/userExtractor.js'
 
-export const bonosAsignadosRouter = express.Router()
+export const asignacionBonosRouter = express.Router()
 
-bonosAsignadosRouter.get('/today/:id', async (req, res, next) => {
+asignacionBonosRouter.get('/today/:id', async (req, res, next) => {
   try {
     await connectToDatabase()
     const id = req.params.id
@@ -34,7 +34,7 @@ bonosAsignadosRouter.get('/today/:id', async (req, res, next) => {
   }
 })
 
-bonosAsignadosRouter.get('/today', async (req, res) => {
+asignacionBonosRouter.get('/today', async (req, res) => {
   try {
     await connectToDatabase()
     const startOfDay = new Date()
@@ -59,13 +59,13 @@ bonosAsignadosRouter.get('/today', async (req, res) => {
   }
 })
 
-bonosAsignadosRouter.get('/', userExtractor, async (req, res) => {
+asignacionBonosRouter.get('/', userExtractor, async (req, res) => {
   connectToDatabase()
   const bonos = await Bono.find({})
   res.json(bonos)
 })
 
-bonosAsignadosRouter.get('/:id', userExtractor, (req, res, next) => {
+asignacionBonosRouter.get('/:id', userExtractor, (req, res, next) => {
   const id = req.params.id
   Bono.findById(id).then(bono => {
     if (bono) {
@@ -76,7 +76,7 @@ bonosAsignadosRouter.get('/:id', userExtractor, (req, res, next) => {
   }).catch(next)
 })
 
-bonosAsignadosRouter.delete('/:id', async (req, res, next) => {
+asignacionBonosRouter.delete('/:id', async (req, res, next) => {
   try {
     await connectToDatabase()
     const id = req.params.id
@@ -87,7 +87,7 @@ bonosAsignadosRouter.delete('/:id', async (req, res, next) => {
   }
 })
 
-bonosAsignadosRouter.post('/', async (req, res, next) => {
+asignacionBonosRouter.post('/', async (req, res, next) => {
   try {
     await connectToDatabase()
     const { codigoEstudiante } = req.body

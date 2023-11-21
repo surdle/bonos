@@ -53,7 +53,7 @@ export const listaEstudiantes = [
     apellidoEstudiante: 'Perez',
     edadEstudiante: '20',
     telefonoEstudiante: '1234567',
-    beneficiario: true,
+    beneficiario: false,
     carrera: 'Desarrollo de Software',
     jornada: 'Diurna',
     fechaMatricula: '2021-01-01',

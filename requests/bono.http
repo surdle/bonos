@@ -14,7 +14,7 @@ POST http://localhost:3001/api/bonos-asignados
 Content-Type: application/json
 
 {
-    "codigoEstudiante": "2260418"
+    "codigoEstudiante": "2260422"
 }
 
 ### get bono asigned today
