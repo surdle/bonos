@@ -6,6 +6,34 @@ import { userExtractor } from '../middleware/userExtractor.js'
 
 export const bonosAsignadosRouter = express.Router()
 
+bonosAsignadosRouter.get('/today/:id', async (req, res, next) => {
+  try {
+    await connectToDatabase()
+    const id = req.params.id
+
+    const startOfDay = new Date()
+    startOfDay.setHours(0, 0, 0, 0)
+    const endOfDay = new Date()
+    endOfDay.setHours(23, 59, 59, 999)
+
+    const bono = await Bono.findOne({
+      _id: id,
+      date: {
+        $gte: startOfDay,
+        $lt: endOfDay
+      }
+    })
+
+    if (bono) {
+      res.json(bono)
+    } else {
+      res.status(404).json({ error: 'No bono found with this id for today' })
+    }
+  } catch (error) {
+    next(error)
+  }
+})
+
 bonosAsignadosRouter.get('/today', async (req, res) => {
   try {
     await connectToDatabase()

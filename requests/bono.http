@@ -21,3 +21,7 @@ Content-Type: application/json
 GET http://localhost:3001/api/bonos-asignados/today
 
 
+### check if bono was asigned today
+GET http://localhost:3001/api/bonos-asignados/today/655bffe2b36f9bb671a7a261
+
+

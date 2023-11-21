@@ -20,11 +20,13 @@ export const userExtractor = (req, res, next) => {
 
   let decodedToken = null
   let userId = null
+  let userRol = null
   // Intentamos verificar el token
   try {
     decodedToken = jwt.verify(token, process.env.SECRET)
     // Si la verificación es exitosa, extraemos el id del usuario del token decodificado
     userId = decodedToken.id
+    userRol = decodedToken.role
   } catch (error) {
     // Si la verificación falla, devolvemos un error
     return res.status(401).json({
@@ -41,6 +43,7 @@ export const userExtractor = (req, res, next) => {
 
   // Adjuntamos el id del usuario a la solicitud
   req.userId = userId
+  req.userRol = userRol
 
   // Pasamos el control al siguiente middleware
   next()
