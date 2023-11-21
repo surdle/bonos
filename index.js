@@ -2,9 +2,9 @@ import express from 'express'
 import cors from 'cors'
 import { notFound } from './middleware/notFound.js'
 import { handleErrors } from './middleware/handleErrors.js'
-import { usersRouter } from './controllers/users.js'
-import { loginRouter } from './controllers/login.js'
-import { bonosRouter } from './controllers/bonos.js'
+import { bonosAsignadosRouter } from './controllers/asignacion-bonos.js'
+import { ingresoRouter } from './controllers/ingreso.js'
+import { usuariosRouter } from './controllers/usuarios.js'
 
 const app = express()
 
@@ -14,9 +14,9 @@ app.use(cors())
 app.use(express.json())
 
 // Definimos las rutas para nuestra API
-app.use('/api/bonos', bonosRouter) // Rutas para los bonos
-app.use('/api/users', usersRouter) // Rutas para los usuarios
-app.use('/api/login', loginRouter) // Rutas para la autenticación
+app.use('/api/bonos-asignados', bonosAsignadosRouter) // Rutas para los bonos asignados')
+app.use('/api/ingreso', ingresoRouter)
+app.use('/api/usuarios', usuariosRouter)
 
 // Usamos el middleware personalizado para manejar las rutas no encontradas y los errores
 app.use(notFound)

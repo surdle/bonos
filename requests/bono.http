@@ -1,31 +1,23 @@
-### Get all bonos
-GET http://localhost:3001/api/bonos
+### get all asigned bonos
+GET http://localhost:3001/api/bonos-asignados
 
-### Get a bono by id
-GET http://localhost:3001/api/bonos/65597e60ed98d10807cbd81e
 
-### Delete a bono by id
-DELETE http://localhost:3001/api/bonos/65597e8d3eefac6932c40b3e
+### get bono by id
+GET http://localhost:3001/api/bonos-asignados/655bff16ba3fbb839073761f
 
-### Post a bono
-POST http://localhost:3001/api/bonos
-Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6IjY1NWFiYzU2NzYwMTUzMTZhMjk2N2M0ZCIsImlhdCI6MTcwMDUyMTY0NywiZXhwIjoxNzAwNTIxNzA3fQ.XMsUocYqWjk2ttgIwGwQYPCB-EWAPThy-lAqJZtWRcw
 
-{
-    "content": "New content for test user",
-    "important": true
-}
+### delete bono by id
+DELETE http://localhost:3001/api/bonos-asignados/655bff16ba3fbb839073761f
 
-### Put a bono
-PUT http://localhost:3001/api/bonos/65597e953eefac6932c40b40
+### asign bono to student
+POST http://localhost:3001/api/bonos-asignados
 Content-Type: application/json
 
 {
-    "content": "New new content 2"
+    "codigoEstudiante": "2260418"
 }
 
+### get bono asigned today
+GET http://localhost:3001/api/bonos-asignados/today
 
 
-
-{"username":"test","name":"Test User","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6IjY1NWFiYzU2NzYwMTUzMTZhMjk2N2M0ZCIsImlhdCI6MTcwMDUyMTY0NywiZXhwIjoxNzAwNTIxNzA3fQ.XMsUocYqWjk2ttgIwGwQYPCB-EWAPThy-lAqJZtWRcw"}

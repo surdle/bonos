@@ -1,9 +1,5 @@
 export const handleErrors = (error, req, res, next) => {
-  console.error(error.name)
-  // if (error.name === 'CastError') {
-  //   return res.status(400).send({ error: 'malformatted id' })
-  // }
-  // next(error)
+  console.error(`💥 ${error.name}`)
   const ERROR_HANDLERS = {
     CastError: res => res.status(400).send({ error: 'malformatted id' }),
     ValidationError: (res, { message }) => res.status(409).send({ error: message }),
